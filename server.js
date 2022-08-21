@@ -6,6 +6,7 @@ const cors = require('cors');
 const path = require('path');
 const PORT = process.env.PORT;
 const articleRoutes = require('./routes/articleRoutes');
+const portfolioRoutes = require('./routes/portfolioRoutes');
 
 
 mongoose.connect(process.env.MONGO, {
@@ -23,6 +24,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(cors());
 
 app.use('/article', articleRoutes);
+app.use('/portfolio', portfolioRoutes);
 
 
 app.listen(PORT, () =>{
