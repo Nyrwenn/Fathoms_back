@@ -7,6 +7,7 @@ const path = require('path');
 const PORT = process.env.PORT;
 const articleRoutes = require('./routes/articleRoutes');
 const portfolioRoutes = require('./routes/portfolioRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 
 mongoose.connect(process.env.MONGO, {
@@ -32,6 +33,7 @@ app.use(cors());
 
 app.use('/article', articleRoutes);
 app.use('/portfolio', portfolioRoutes);
+app.use('/admin', adminRoutes);
 
 
 app.listen(PORT, () =>{
