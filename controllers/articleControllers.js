@@ -4,11 +4,20 @@ const fs = require('fs');
 exports.createArticle = async (req, res, next) =>{
     try{
         const articleObject = req.body;
-      
-        const article = await Article.create({
+        let article;
+      if(req.file){
+            article = await Article.create({
             ...articleObject,
             picture: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         })
+
+      }  else {
+            article = await Article.create({
+                ...articleObject
+            })
+
+      }
+      
 
         article.save()
         res.status(201).json({message : "Article created !"})
