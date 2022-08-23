@@ -60,8 +60,7 @@ exports.login = async (req, res, next) => {
             admin: admin.id,
             token: jwt.sign(
                 {admin: admin.id},
-                process.env.PassJWT,
-                {expiresIn: '24h'}
+                process.env.PassJWT
             )
         });
 
@@ -93,8 +92,7 @@ exports.me = async (req, res, next ) => {
             admin: admin.id,
             token: jwt.sign(
                 {admin: admin.id},
-                process.env.PassJWT,
-                {expiresIn: '24h'}
+                process.env.PassJWT
             )
         })
     }
