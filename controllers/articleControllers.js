@@ -38,16 +38,21 @@ exports.modifyArticle = async (req, res, next) => {
         let filename = null;
         if(req.file){
             filename = article.picture.split('/images/')[1];
-        }
-       
-        fs.unlink(`images/${filename}`, async () =>{
+             fs.unlink(`images/${filename}`, async () =>{
             await Article.updateOne({_id: req.params.id}, {
                 picture: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
                 ...articleObject
             })
 
+            })
             res.status(201).json({message: "The article has been updated !"})
-        })
+        }else{
+            await Article.updateOne({_id: req.params.id}, {
+                ...articleObject
+            })
+
+            res.status(201).json({message: "The article without image has been updated !"})
+        }
 
     }
 
