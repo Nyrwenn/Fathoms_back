@@ -4,12 +4,18 @@ const fs = require('fs');
 exports.createPortfolio = async (req, res, next) =>{
     try{
         const portfolioObject = req.body;
-
-        const portfolio = await Portfolio.create({
+        let portfolio;
+        if(req.file){
+            portfolio = await Portfolio.create({
             ...portfolioObject,
             picture: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         })
-
+        }else{
+            portfolio = await Portfolio.create({
+                ...portfolioObject
+            })
+        }
+      
         portfolio.save()
         res.status(201).json({message: "Portfolio created !"})
     }
@@ -30,15 +36,21 @@ exports.modifyPortfolio = async (req, res, next) =>{
         let filename = null;
         if(req.file){
             filename = portfolio.picture.split('/images/')[1];
-        }
-
-        fs.unlink(`images/${filename}`, async () =>{
+                 fs.unlink(`images/${filename}`, async () =>{
             await Portfolio.updateOne({_id: req.params.id}, {
                 picture: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
                 ...portfolioObject
             })
-            res.status(201).json({message: "The portfolio has been updated !"})
         })
+            res.status(201).json({message: "The portfolio has been updated !"})
+
+        }else{
+            await Portfolio.updateOne({_id: req.params.id},{
+                ...portfolioObject
+            })
+            res.status(201).json({message: "The portfolio without image has been updated ! "})
+
+        }
 
     }
 
