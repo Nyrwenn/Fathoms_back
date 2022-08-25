@@ -13,14 +13,9 @@ exports.signup = async (req, res, next) => {
       throw new Error("This admin already exists !");
     }
 
-    // if (email) {
-    //   throw new Error("This email already exists !");
-    // }
-
     const hash = await bcrypt.hash(req.body.password, 10);
     const adminGlobal = await Admin.create({
       admin: req.body.admin,
-      //   email: req.body.email,
       password: hash,
     });
 
